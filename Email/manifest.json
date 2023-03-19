@@ -1,0 +1,31 @@
+{
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "js": [
+        "content.js"
+      ],
+      "matches": [
+        "*://mail.google.com/*"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "description": "Tiện ích lay noi dung email",
+  "manifest_version": 3,
+  "name": "Get email",
+  "permissions": [
+    "activeTab",
+      "tabs",
+      "notifications",  
+    "storage",
+    "unlimitedStorage"
+  ],
+  "version": "1.0.1"
+}
