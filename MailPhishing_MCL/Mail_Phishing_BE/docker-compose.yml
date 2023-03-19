@@ -1,0 +1,30 @@
+
+version: '3.0'
+
+services:
+  api-mail-machine:
+    build: .
+    depends_on:
+      - mongo
+    restart: always
+    volumes:
+      - .:/home/node/app 
+      - /home/node/app/node_modules
+    ports:
+      - 6787:6787
+    networks:
+      - default
+  mongo:
+    image: mongo
+    volumes:  
+      - ./data/db:/data/db
+    ports:
+      - 27023:27017
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    networks:
+      - default
+networks:
+      default:
