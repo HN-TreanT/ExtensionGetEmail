@@ -8,6 +8,9 @@
   "content_scripts": [
     {
       "all_frames": true,
+      "css":[
+      "index.css"
+      ],
       "js": [
         "content.js"
       ],
