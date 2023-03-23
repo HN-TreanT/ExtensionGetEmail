@@ -1,0 +1,10 @@
+version: '3.0'
+
+services:
+  api-inferrence-service:
+    build: .
+    command: sh -c "python3 -u inference.py runserver 0.0.0.0:6777"
+    volumes:
+      - .:/app
+    ports:
+      - 6777:6777

@@ -58,24 +58,30 @@ function collectEmailElements() {
     .getElementsByClassName("gK")[0]
     .getElementsByClassName("g3")[0]
     .getAttribute("title");
-
+  //get body email
   const bodyEmail = element.children[2];
-  console.log("check date email: ", convertDate(date));
-  console.log("check subject email-->", subjectEmail);
-  console.log("check addressEmail --->", addressEmailUserSend);
-  console.log("check name user send mail---->", nameUserSend);
-  console.log("check body email --->", bodyEmail.innerHTML);
+  //get address email user recieved
+  const addressEmailUserRecieved = emailHeader
+    .getElementsByClassName("iw ajw")[0]
+    .getElementsByTagName("span")[1]
+    .getAttribute("email");
+  // console.log("check date email: ", convertDate(date));
+  // console.log("check subject email-->", subjectEmail);
+  // console.log("check addressEmail --->", addressEmailUserSend);
+  // console.log("check name user send mail---->", nameUserSend);
+  // console.log("check body email --->", bodyEmail.innerHTML);
+  // console.log("check name user receive mail--->", addressEmailUserRecieved);
 
   // contentEmailElement = emailHeader.innerHTML;
-  console.log(emailHeader);
-  console.log(element);
+  // console.log(emailHeader);
+  // console.log(element);
   // }
   const data = {
     from: {
       name: nameUserSend,
       email: addressEmailUserSend,
     },
-    to: "hntreant@3@gmail.com",
+    to: addressEmailUserRecieved,
     subject: subjectEmail,
     body: bodyEmail.innerHTML,
     date: convertDate(date),
@@ -90,7 +96,25 @@ function collectEmailElements() {
     },
   })
     .then((res) => res.json())
-    .then((data) => console.log(data))
+    .then((data) => {
+      console.log(data);
+      const path = {
+        model_path: "hoang nam",
+        sample_path: "fneuf",
+      };
+      if (data.status) {
+        fetch("http://localhost:6777/inference", {
+          method: "POST",
+          body: JSON.stringify(path),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data))
+          .catch((err) => console.log(err));
+      }
+    })
     .catch((err) => console.log(err));
   //////////////////////
   chrome.runtime.sendMessage({
