@@ -1,11 +1,11 @@
 const body = document.getElementsByTagName("body");
 // const body = document.getElementsByClassName("vY nq");
-window.onload = function () {
-  const body = document.querySelector(".nH");
-  const button = createBtn("kiem tra");
-  body.prepend(button);
-  console.log("check-->", body);
-};
+// window.onload = function () {
+//   const body = document.querySelector(".nH");
+//   const button = createBtn("kiem tra");
+//   body.prepend(button);
+//   console.log("check-->", body);
+// };
 const URL = "https://mail.google.com/mail/u/0/#inbox";
 document.addEventListener("click", function (event) {
   console.log(event.target);
@@ -18,12 +18,12 @@ document.addEventListener("click", function (event) {
   }
 });
 //function create button
-function createBtn(html) {
-  const button = document.createElement("button");
-  button.innerHTML = html;
-  button.className = "button-check-phishing";
-  return button;
-}
+// function createBtn(html) {
+//   const button = document.createElement("button");
+//   button.innerHTML = html;
+//   button.className = "button-check-phishing";
+//   return button;
+// }
 window.addEventListener("DOMContentLoaded", function (a) {
   const buttonCheck = createBtn("Kiểm tra");
   const butttonCheckStyles = {
@@ -39,6 +39,10 @@ window.addEventListener("DOMContentLoaded", function (a) {
   }
   buttonCheck.onclick = (e) => {
     collectEmailElements();
+    createModalDialog();
+    chrome.runtime.sendMessage({
+      type: "ok",
+    });
   };
 });
 
@@ -119,18 +123,14 @@ function collectEmailElements() {
           },
         })
           .then((res) => res.json())
-          .then((data) => console.log(data))
+          .then((data) => {
+            console.log(data);
+          })
           .catch((err) => console.log(err));
       }
     })
     .catch((err) => console.log(err));
   //////////////////////
-  chrome.runtime.sendMessage({
-    type: "html element",
-    data: {
-      //from: addressEmail[0].getAttribute("email"),
-    },
-  });
 }
 
 function convertDate(dateString) {
@@ -146,4 +146,61 @@ function convertDate(dateString) {
     parseInt(minute)
   );
   return date;
+}
+
+function createModalDialog() {
+  // const modalDialog = document.createElement('div');
+  const modalDialog = `
+  <div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+
+</div>`;
+  const modalDialogStyle = `
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }`;
+  for (const bod of body) {
+    const modalContainer = document.createElement("div");
+    modalContainer.innerHTML = modalDialog;
+    bod.appendChild(modalContainer);
+    // const style = document.createElement('style');
+    // style.innerHTML(modalContainer);
+    // bod.appendChild(style);
+  }
 }
