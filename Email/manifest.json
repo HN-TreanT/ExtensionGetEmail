@@ -19,7 +19,7 @@
   ],
   "description": "Tiện ích lay noi dung email",
   "manifest_version": 3,
-  "name": "Get email",
+  "name": "Email phishing",
   "permissions": [
     "activeTab",
       "tabs",

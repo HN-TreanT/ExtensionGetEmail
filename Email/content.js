@@ -1,10 +1,13 @@
 const body = document.getElementsByTagName("body");
+// const body = document.getElementsByClassName("vY nq");
+window.onload = function () {
+  const body = document.querySelector(".nH");
+  const button = createBtn("kiem tra");
+  body.prepend(button);
+  console.log("check-->", body);
+};
 const URL = "https://mail.google.com/mail/u/0/#inbox";
 document.addEventListener("click", function (event) {
-  //   if (event.target.matches('[role="checkbox"]')) {
-  //     console.log("ok");
-  //     chrome.runtime.sendMessage({ action: "alert" });
-  //   }
   console.log(event.target);
   if (
     event.target.classList.contains("y2") ||
@@ -14,19 +17,24 @@ document.addEventListener("click", function (event) {
     chrome.runtime.sendMessage({ action: "ok" });
   }
 });
-// window.addEventListener("DOMContentLoaded", function (a) {
-//   const buttonCheck = createBtn("Kiem tra");
-//   for (const bod of body) {
-//     bod.prepend(buttonCheck);
-//   }
-//   buttonCheck.onclick = (e) => {
-//     // const elementWrapper = e.target.parentNode;
-//     collectEmailElements();
-//   };
-// });
+//function create button
+function createBtn(html) {
+  const button = document.createElement("button");
+  button.innerHTML = html;
+  button.className = "button-check-phishing";
+  return button;
+}
 window.addEventListener("DOMContentLoaded", function (a) {
-  const buttonCheck = createBtn("Kiem tra");
+  const buttonCheck = createBtn("Kiểm tra");
+  const butttonCheckStyles = {
+    // position: "fixed",
+    bottom: "100px",
+    left: "300px",
+    // backgroundColor: "red",
+  };
+  Object.assign(buttonCheck.style, butttonCheckStyles);
   for (const bod of body) {
+    console.log(bod);
     bod.prepend(buttonCheck);
   }
   buttonCheck.onclick = (e) => {
@@ -123,14 +131,6 @@ function collectEmailElements() {
       //from: addressEmail[0].getAttribute("email"),
     },
   });
-}
-
-//function create button
-function createBtn(html) {
-  const button = document.createElement("button");
-  button.innerHTML = html;
-  button.className = "btn-clone-post";
-  return button;
 }
 
 function convertDate(dateString) {
