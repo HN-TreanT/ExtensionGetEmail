@@ -6,6 +6,7 @@ const body = document.getElementsByTagName("body");
 //   body.prepend(button);
 //   console.log("check-->", body);
 // };
+
 const URL = "https://mail.google.com/mail/u/0/#inbox";
 document.addEventListener("click", function (event) {
   console.log(event.target);
@@ -18,32 +19,36 @@ document.addEventListener("click", function (event) {
   }
 });
 //function create button
-// function createBtn(html) {
-//   const button = document.createElement("button");
-//   button.innerHTML = html;
-//   button.className = "button-check-phishing";
-//   return button;
-// }
-window.addEventListener("DOMContentLoaded", function (a) {
-  const buttonCheck = createBtn("Kiểm tra");
-  const butttonCheckStyles = {
-    // position: "fixed",
-    bottom: "100px",
-    left: "300px",
-    // backgroundColor: "red",
-  };
-  Object.assign(buttonCheck.style, butttonCheckStyles);
+function createBtn(html) {
+  // const button = document.createElement("button");
+  // button.innerHTML = html;
+  // button.className = "button-check-phishing";
+  // return button;
+  const ButtonCheck = `
+  <div id="button-check-email">Kiem tra</div> 
+  `;
   for (const bod of body) {
-    console.log(bod);
-    bod.prepend(buttonCheck);
+    const buttonContainer = document.createElement("div");
+    buttonContainer.innerHTML = ButtonCheck;
+    bod.appendChild(buttonContainer);
   }
-  buttonCheck.onclick = (e) => {
+}
+
+window.addEventListener("popstate", function () {
+  // if (window.location.href !== "https://mail.google.com/mail/u/0/#inbox") {
+  //   const modalContainer = document.getElementById("modal-container");
+  //   modalContainer.style.display = "block";
+  //   collectEmailElements();
+  // }
+  const hash = window.location.hash.substring(1);
+  if (hash.startsWith("inbox/") && hash.substring(6) !== null) {
     collectEmailElements();
-    createModalDialog();
-    chrome.runtime.sendMessage({
-      type: "ok",
-    });
-  };
+  }
+});
+
+window.addEventListener("DOMContentLoaded", function (a) {
+  createModalDialog();
+  console.log(window.location.href);
 });
 
 function collectEmailElements() {
@@ -84,10 +89,6 @@ function collectEmailElements() {
   // console.log("check body email --->", bodyEmail.innerHTML);
   // console.log("check name user receive mail--->", addressEmailUserRecieved);
 
-  // contentEmailElement = emailHeader.innerHTML;
-  // console.log(emailHeader);
-  // console.log(element);
-  // }
   const data = {
     from: {
       name: nameUserSend,
@@ -124,7 +125,11 @@ function collectEmailElements() {
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
+            if (data === 1) {
+              //  createModalDialog();
+              const modalContainer = document.getElementById("modal-container");
+              modalContainer.style.display = "block";
+            }
           })
           .catch((err) => console.log(err));
       }
@@ -147,60 +152,29 @@ function convertDate(dateString) {
   );
   return date;
 }
-
 function createModalDialog() {
-  // const modalDialog = document.createElement('div');
-  const modalDialog = `
-  <div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
+  const modealDialog = `
+  <div id="modal-container" class="">
+  <div id="modal-content">
+    <h2 class="modal-dialog-title">Warning!</h2>
+    <p>This email is dangerous, beware!</p>
+    <button id="close-modal">Close</button>
+    <button id="back-to-page">Quay lại</button>
   </div>
-
 </div>`;
-  const modalDialogStyle = `
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }`;
   for (const bod of body) {
     const modalContainer = document.createElement("div");
-    modalContainer.innerHTML = modalDialog;
+    modalContainer.innerHTML = modealDialog;
     bod.appendChild(modalContainer);
-    // const style = document.createElement('style');
-    // style.innerHTML(modalContainer);
-    // bod.appendChild(style);
   }
+  const buttonClose = document.getElementById("close-modal");
+  const buttonBack = document.getElementById("back-to-page");
+  const modalContainer = document.getElementById("modal-container");
+  buttonClose.onclick = () => {
+    modalContainer.style.display = "none";
+  };
+  buttonBack.onclick = () => {
+    modalContainer.style.display = "none";
+    window.location.href = "https://mail.google.com/mail/u/0/#inbox";
+  };
 }
