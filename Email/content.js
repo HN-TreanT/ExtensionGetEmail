@@ -41,7 +41,11 @@ window.addEventListener("popstate", function () {
   //   collectEmailElements();
   // }
   const hash = window.location.hash.substring(1);
-  if (hash.startsWith("inbox/") && hash.substring(6) !== null) {
+  if (
+    (hash.startsWith("inbox/") && hash.substring(6) !== null) ||
+    (hash.startsWith("all/") && hash.substring(4) !== null) ||
+    (hash.startsWith("spam/") && hash.substring(5) !== null)
+  ) {
     collectEmailElements();
   }
 });
