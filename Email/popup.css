@@ -1,0 +1,11 @@
+body.small{
+    width: 300px;
+    min-height: 100px;
+}
+#fe-extension-container{
+    display: flex;
+    flex-direction: column;
+}
+.button-select-checkbox{
+   
+}

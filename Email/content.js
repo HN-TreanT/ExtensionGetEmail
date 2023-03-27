@@ -1,4 +1,5 @@
 const body = document.getElementsByTagName("body");
+var typeModel;
 // const body = document.getElementsByClassName("vY nq");
 // window.onload = function () {
 //   const body = document.querySelector(".nH");
@@ -6,6 +7,10 @@ const body = document.getElementsByTagName("body");
 //   body.prepend(button);
 //   console.log("check-->", body);
 // };
+chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+  console.log(msg.type);
+  typeModel = msg.type;
+});
 
 const URL = "https://mail.google.com/mail/u/0/#inbox";
 document.addEventListener("click", function (event) {
@@ -116,8 +121,7 @@ function collectEmailElements() {
     .then((data) => {
       console.log(data);
       const path = {
-        model_path: "hoang nam",
-        sample_path: "fneuf",
+        type: typeModel ? typeModel : "model1",
       };
       if (data.status) {
         fetch("http://localhost:6777/inference", {
@@ -129,11 +133,12 @@ function collectEmailElements() {
         })
           .then((res) => res.json())
           .then((data) => {
-            if (data === 1) {
-              //  createModalDialog();
-              const modalContainer = document.getElementById("modal-container");
-              modalContainer.style.display = "block";
-            }
+            console.log(data);
+            // if (data === 1) {
+            //   //  createModalDialog();
+            //   const modalContainer = document.getElementById("modal-container");
+            //   modalContainer.style.display = "block";
+            // }
           })
           .catch((err) => console.log(err));
       }
@@ -161,7 +166,7 @@ function createModalDialog() {
   <div id="modal-container" class="">
   <div id="modal-content">
     <h2 class="modal-dialog-title">Warning!</h2>
-    <p>This email is dangerous, beware!</p>
+    <p>This email is dangerous, be aware!</p>
     <button id="close-modal">Close</button>
     <button id="back-to-page">Quay lại</button>
   </div>
