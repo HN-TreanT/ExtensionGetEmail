@@ -84,7 +84,7 @@ def inference(eml_path):
   label = model.predict(features_df)
 
   # Trả về nhãn dự đoán
-  return label.tolist()
+  return label.tolist() 
 
 #test= inference('C:/Users/hahah/Documents/NCKH/2023/của Phương/hahahaphuong04/Inbox/message-1-3267.eml')
 #print(test)
@@ -93,19 +93,17 @@ def inference(eml_path):
 @app.route('/inference', methods=['POST'])
 def CheckEmail():
     data = request.get_json()
-    # if data['type'] == 'model1':
-    #    print('model1')
-    #    return jsonify('model1')
-    # if data['type'] == 'model2':
-    #    print('model2')
-    #    return jsonify('model1')
-    # if data['type'] == 'model3':
-    #    print('model3')
-    #    return jsonify('model3')
-    # print(data)
-    results = inference('./email.eml')
+    if data['type'] == 'hard-voting':
+       return jsonify('hard-voting')
+    if data['type'] == 'soft-voting':
+       return jsonify('sort-voting')
+    if data['type'] == 'rfc':
+       return jsonify('rfc')
+    if data['type'] == 'svc':
+       return jsonify('svc')
+    # results = inference('./email.eml')
     # return jsonify(results) 
-    return jsonify(results[0])
+    # return jsonify(results[0])
   
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=6777) 

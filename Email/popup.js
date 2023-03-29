@@ -1,4 +1,4 @@
-var port = chrome.runtime.connect({ name: "popup" });
+// var port = chrome.runtime.connect({ name: "popup" });
 $(document).ready(function () {
   // insertModel();
   // port.postMessage({ type: $("#model-select").find("option[selected]").val() });
@@ -11,7 +11,7 @@ $(document).ready(function () {
   $("#model-select").change(function () {
     const selectedValue = $(this).val();
     chrome.storage.sync.set({ selectedValue: selectedValue }, function () {
-      port.postMessage({ type: selectedValue });
+      //port.postMessage({ type: selectedValue });
     });
   });
 });

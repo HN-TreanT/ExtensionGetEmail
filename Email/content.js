@@ -1,11 +1,10 @@
 const body = document.getElementsByTagName("body");
-var typeModel;
-chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-  console.log(msg.type);
-  typeModel = msg.type;
-});
-
 const URL = "https://mail.google.com/mail/u/0/#inbox";
+// var typeModel;
+// chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+//   console.log(msg.type);
+//   typeModel = msg.type;
+// });
 document.addEventListener("click", function (event) {
   console.log(event.target);
   if (
@@ -102,29 +101,33 @@ function collectEmailElements() {
     },
   })
     .then((res) => res.json())
-    .then((data) => {
+    .then(async (data) => {
       console.log(data);
-      const path = {
-        type: typeModel ? typeModel : "model1",
-      };
-      if (data.status) {
-        fetch("http://localhost:6777/inference", {
-          method: "POST",
-          body: JSON.stringify(path),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            if (data === 1) {
-              const modalContainer = document.getElementById("modal-container");
-              modalContainer.style.display = "block";
-            }
+      await chrome.storage.sync.get(["selectedValue"], function (result) {
+        console.log("check result-->,", result);
+        const path = {
+          type: result.selectedValue,
+        };
+        if (data.status) {
+          fetch("http://localhost:6777/inference", {
+            method: "POST",
+            body: JSON.stringify(path),
+            headers: {
+              "Content-Type": "application/json",
+            },
           })
-          .catch((err) => console.log(err));
-      }
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+              if (data === 1) {
+                const modalContainer =
+                  document.getElementById("modal-container");
+                modalContainer.style.display = "block";
+              }
+            })
+            .catch((err) => console.log(err));
+        }
+      });
     })
     .catch((err) => console.log(err));
 }
