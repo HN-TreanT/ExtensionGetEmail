@@ -1,19 +1,35 @@
 var port = chrome.runtime.connect({ name: "popup" });
 $(document).ready(function () {
-  $('input[name="checkbox-model"]').click(function () {
-    $('input[name="checkbox-model"]').not(this).prop("checked", false);
+  // insertModel();
+  // port.postMessage({ type: $("#model-select").find("option[selected]").val() });
+  chrome.storage.sync.get(["selectedValue"], function (result) {
+    if (result.selectedValue) {
+      $("#model-select").val(result.selectedValue);
+    }
   });
 
-  $(".button-select-checkbox").click(function () {
-    let selectedValues;
-    $('input[name="checkbox-model"]:checked').each(function () {
-      if ($(this).val() !== "") {
-        // selectedValues.push($(this).val());
-        selectedValues = $(this).val();
-      }
+  $("#model-select").change(function () {
+    const selectedValue = $(this).val();
+    chrome.storage.sync.set({ selectedValue: selectedValue }, function () {
+      port.postMessage({ type: selectedValue });
     });
-    // alert(selectedValues);
-    // port.postMessage({ status: "ok", type: "modal1" });
-    port.postMessage({ type: selectedValues });
   });
 });
+
+async function insertModel() {
+  await fetch("http://127.0.0.1:6787/api/v1/model/getAllModel", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      return ` ${data.data.map((model) => {
+        $("#model-select").append(
+          `<option class="model-item" value="${model.pathFile}">${model.name}</option>`
+        );
+      })}
+     `;
+    });
+}

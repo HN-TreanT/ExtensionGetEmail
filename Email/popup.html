@@ -7,42 +7,21 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <title>Document</title>
     <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="./lib/bootstrap.min.css">
 </head>
 <body class="small m-2">
-    <div id="fe-extension-container">
-        <div class="form-check" >
-            <input class="form-check-input" checked type="checkbox" name="checkbox-model" id="exampleCheckbox" value="model1">
-            <label class="form-check-label" for="exampleCheckbox">
-              Model 1
-            </label>
-        </div>
-        <div class="form-check" >
-            <input class="form-check-input" type="checkbox"  name="checkbox-model" id="exampleCheckbox" value="model2">
-            <label class="form-check-label" for="exampleCheckbox">
-              Model 2
-            </label>
-        </div>
-        <div class="form-check" >
-            <input class="form-check-input" type="checkbox"  name="checkbox-model" id="exampleCheckbox" value="model3">
-            <label class="form-check-label" for="exampleCheckbox">
-              Model 3
-            </label>
-        </div>
-        <div class="form-check" >
-            <input class="form-check-input" type="checkbox"  name="checkbox-model" id="exampleCheckbox" value="model3">
-            <label class="form-check-label" for="exampleCheckbox">
-              Model 3
-            </label>
-        </div>
-        <div class="button-select-checkbox">
-            <button>Ok</button>
-        </div>
-          
+    <div id="fe-extension-container"> 
+        <div class="title-select-model">Hãy chọn model:</div>
+        <select name="model" id="model-select" >
+          <option class="model-item"  value="model1">Model1</option>
+          <option class="model-item"  value="model2">Model2</option>
+          <option class="model-item" value="model3">Model3</option>
+        </select>
     </div>
     <script src="./lib/jquery.js"></script>
     <script src="./lib/flatpickr.min.js"></script>
     <script src="./lib/popper.js"></script>
-    <script src="./lib//boostrap.js"></script>
+    <script src="./lib/boostrap.js"></script>
     <script src="./lib/select2.js"></script>
     <script src="./lib/vn.js"></script>
     <script src="./popup.js"></script>

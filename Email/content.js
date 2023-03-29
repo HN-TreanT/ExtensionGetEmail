@@ -1,12 +1,5 @@
 const body = document.getElementsByTagName("body");
 var typeModel;
-// const body = document.getElementsByClassName("vY nq");
-// window.onload = function () {
-//   const body = document.querySelector(".nH");
-//   const button = createBtn("kiem tra");
-//   body.prepend(button);
-//   console.log("check-->", body);
-// };
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   console.log(msg.type);
   typeModel = msg.type;
@@ -25,10 +18,6 @@ document.addEventListener("click", function (event) {
 });
 //function create button
 function createBtn(html) {
-  // const button = document.createElement("button");
-  // button.innerHTML = html;
-  // button.className = "button-check-phishing";
-  // return button;
   const ButtonCheck = `
   <div id="button-check-email">Kiem tra</div> 
   `;
@@ -40,11 +29,6 @@ function createBtn(html) {
 }
 
 window.addEventListener("popstate", function () {
-  // if (window.location.href !== "https://mail.google.com/mail/u/0/#inbox") {
-  //   const modalContainer = document.getElementById("modal-container");
-  //   modalContainer.style.display = "block";
-  //   collectEmailElements();
-  // }
   const hash = window.location.hash.substring(1);
   if (
     (hash.startsWith("inbox/") && hash.substring(6) !== null) ||
@@ -134,17 +118,15 @@ function collectEmailElements() {
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
-            // if (data === 1) {
-            //   //  createModalDialog();
-            //   const modalContainer = document.getElementById("modal-container");
-            //   modalContainer.style.display = "block";
-            // }
+            if (data === 1) {
+              const modalContainer = document.getElementById("modal-container");
+              modalContainer.style.display = "block";
+            }
           })
           .catch((err) => console.log(err));
       }
     })
     .catch((err) => console.log(err));
-  //////////////////////
 }
 
 function convertDate(dateString) {
@@ -165,9 +147,9 @@ function createModalDialog() {
   const modealDialog = `
   <div id="modal-container" class="">
   <div id="modal-content">
-    <h2 class="modal-dialog-title">Warning!</h2>
-    <p>This email is dangerous, be aware!</p>
-    <button id="close-modal">Close</button>
+    <h2 class="modal-dialog-title">Cảnh báo!</h2>
+    <p>Thư này có vẻ nguy hiểm, hãy cẩn thận!</p>
+    <button id="close-modal">Tiếp tục</button>
     <button id="back-to-page">Quay lại</button>
   </div>
 </div>`;
